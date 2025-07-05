@@ -56,7 +56,7 @@ def predict(X, w, b, labels):
 
 
 
-def load_imgs(load_train_set=True, image_limit=200):
+def load_imgs(load_train_set=True, image_limit=2000):
     image_set = 'training_set' if load_train_set else 'test_set'
     folder_path = f'./{image_set}'
     images = []
@@ -103,5 +103,5 @@ if __name__ == "__main__":
     w, b = initialize_matrices(train_set_images)
     w, b = train(train_set_images, labels, w, b)
     test_set_images, labels = load_imgs(load_train_set=False)
-    predict(train_set_images, w, b, labels)
+    predict(test_set_images, w, b, labels)
     print('Process finished...')
