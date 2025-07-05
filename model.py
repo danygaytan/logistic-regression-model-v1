@@ -34,16 +34,26 @@ def train(X, Y, w, b, learning_rate=0.0005, num_iterations = 10000):
         w -= learning_rate * dw
         b -= learning_rate * db
 
-        print(f'Cost after iteration {it} -> {cost}')
+        print(f'Cost after iteration {it} -> {round(cost * 100, 2)}')
     
     return w, b
 
 def predict(X, w, b, labels):
     prediction_set = calculate_logistic_regression(X, w, b).T
 
+    total_examples = len(prediction_set)
+    total_correct_prediction = 0
+
     for i, _ in enumerate(prediction_set):
         prediction = 'cat' if prediction_set[i] > 0.5 else 'dog'
-        print(f'Prediction for example {i} -> {prediction} | correct label -> {"cat" if labels[i] == 1 else "dog"}')
+        label = "cat" if labels[i] == 1 else "dog"
+        print(f'Prediction for example {i} -> {prediction} | correct label -> {label}')
+        if prediction == label:
+            total_correct_prediction += 1
+    
+    print(f'Prediction result: {total_correct_prediction} predicted correctly over {total_examples} examples')
+    print(f'With an accuracy of {round(total_correct_prediction / total_examples * 100, 2)}%')
+
 
 
 def load_imgs(load_train_set=True, image_limit=200):
@@ -90,9 +100,7 @@ if __name__ == "__main__":
     # train the model
     print('Process started...')
     train_set_images, labels = load_imgs()
-    print('Train set X and labels:', train_set_images.shape, labels[0])
     w, b = initialize_matrices(train_set_images)
-    print('Weights and B', w.shape, b)
     w, b = train(train_set_images, labels, w, b)
     test_set_images, labels = load_imgs(load_train_set=False)
     predict(train_set_images, w, b, labels)
